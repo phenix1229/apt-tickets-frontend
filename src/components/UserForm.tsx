@@ -1,38 +1,107 @@
-import React from 'react'
+import { FormControl, FormGroup, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import React, {useState} from 'react'
 
 const UserForm = () => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [cellNumber, setCellNumber] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [unit, setUnit] = useState('');
+  const [department, setDepartment] = useState('');
+  const [role, setRole] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   return (
     <div>
-        <form action="" method="post">
-            <label htmlFor="firstName">First name</label>
-            <input type="text" name="firstName" id="firstName" />
-            <label htmlFor="lastName">Last name</label>
-            <input type="text" name="lastName" id="lastName" />
-            <label htmlFor="email">Email</label>
-            <input type="email" name="email" id="email" />
-            <label htmlFor="cellNumber">Cellular number</label>
-            <input type="tel" name="cellNumber" id="cellNumber" />
-            <label htmlFor="phoneNumber">Phone number</label>
-            <input type="tel" name="phoneNumber" id="phoneNumber" />
-            <label htmlFor="unit">Unit</label>
-            <input type="text" name="unit" id="unit" />
-            <label htmlFor="department">Department</label>
-            <input type="text" name="department" id="department" />
-            <label htmlFor="password">Password</label>
-            <input type="password" name="password" id="password" />
-            <label htmlFor="confirmPassword">Confirm password</label>
-            <input type="password" name="confirmPassword" id="confirmPassword" />
-            <label htmlFor="isAdmin">Administrator?</label>
-            <select name="isAdmin" id="isAdmin">
-                <option value="false">False</option>
-                <option value="true">True</option>
-            </select>
-            <label htmlFor="isStaff">Staff?</label>
-            <select name="isStaff" id="isStaff">
-                <option value="false">False</option>
-                <option value="true">True</option>
-            </select>
-        </form>
+      <br/>
+      <br/>
+      <br/>
+    <FormControl>
+      <InputLabel id='roleLabel'>Role</InputLabel>
+      <Select
+          required
+          labelId='role'
+          label='Role'
+          id='role'
+          value={role}
+          onChange={(Event) => setRole(Event.target.value)}
+          >
+          <MenuItem value={'Admin'}>Admin</MenuItem>
+          <MenuItem value={'Staff'}>Staff</MenuItem>
+          <MenuItem value={'Resident'}>Resident</MenuItem>
+        </Select>
+      <FormGroup>
+        <TextField
+          required
+          margin='normal'
+          id='firstName'
+          label="First name"
+          value={firstName}
+          onChange={(Event) => setFirstName(Event.target.value)}
+        />
+        <TextField
+          required
+          margin='normal'
+          id='lastName'
+          label="Last name"
+          value={lastName}
+          onChange={(Event) => setLastName(Event.target.value)}
+        />
+        <TextField
+          required
+          margin='normal'
+          id='email'
+          label="Email"
+          value={email}
+          onChange={(Event) => setEmail(Event.target.value)}
+        />
+        <TextField
+          margin='normal'
+          id='cellNumber'
+          label="Cell number"
+          value={cellNumber}
+          onChange={(Event) => setCellNumber(Event.target.value)}
+        />
+        <TextField
+          margin='normal'
+          id='phoneNumber'
+          label="Phone number"
+          value={phoneNumber}
+          onChange={(Event) => setPhoneNumber(Event.target.value)}
+        />
+        <TextField
+          margin='normal'
+          id='unit'
+          label="Unit"
+          value={unit}
+          onChange={(Event) => setUnit(Event.target.value)}
+        />
+        <TextField
+          margin='normal'
+          id='department'
+          label="Department"
+          value={department}
+          onChange={(Event) => setDepartment(Event.target.value)}
+        />
+        <TextField
+          required
+          margin='normal'
+          id='password'
+          label="Password"
+          value={password}
+          onChange={(Event) => setPassword(Event.target.value)}
+        />
+        <TextField
+          required
+          margin='normal'
+          id='confirmPassword'
+          label="Confirm password"
+          value={confirmPassword}
+          onChange={(Event) => setConfirmPassword(Event.target.value)}
+        />
+      </FormGroup>
+    </FormControl>
     </div>
   )
 }
