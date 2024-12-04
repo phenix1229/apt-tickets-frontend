@@ -1,5 +1,5 @@
 import { FormControl, FormGroup, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-import React, {useState} from 'react'
+import {useState} from 'react'
 
 const UserForm = () => {
   const [firstName, setFirstName] = useState('');

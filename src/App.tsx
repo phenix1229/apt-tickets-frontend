@@ -8,12 +8,9 @@ import StaffHome from './pages/StaffHome'
 import AdminHome from './pages/AdminHome'
 import CreateTicket from './pages/CreateTicket'
 import CreateUser from './pages/CreateUser'
-import { ThemeProvider } from '@mui/material'
-import theme from './components/ui/Theme'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    // <ThemeProvider theme={theme}>
       <Route path='/' element={<MainLayout />}>
         <Route index element={<Index />} />
         <Route path='/login' element={<Login />}/>
@@ -23,7 +20,6 @@ const router = createBrowserRouter(
         <Route path='/createTicket' element={<CreateTicket />}/>
         <Route path='/createUser' element={<CreateUser />}/>
       </Route>
-    // </ThemeProvider>
   )
 )
 
