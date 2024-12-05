@@ -1,14 +1,14 @@
-import { FormControl, FormGroup, InputLabel, MenuItem, Select, TextField } from '@mui/material'
-import { useState } from 'react'
+import { FormControl, InputLabel, Select, MenuItem, FormGroup, TextField } from "@mui/material"
+import { useState } from "react"
 
-const TicketForm = () => {
-  const [clientName, setClientName] = useState('')
-  const [clientPhone, setClientPhone] = useState('')
-  const [cleintCell, setClientCell] = useState('')
-  const [clientEmail, setClientEmail] = useState('')
-  const [clientLocation, setClientLocation] = useState('')
-  const [assignedDepartment, setAssignedDepartment] = useState('')
-  const [description, setDescription] = useState('')
+const UpdateTicketForm = () => {
+    const [clientName, setClientName] = useState('')
+    const [clientPhone, setClientPhone] = useState('')
+    const [cleintCell, setClientCell] = useState('')
+    const [clientEmail, setClientEmail] = useState('')
+    const [clientLocation, setClientLocation] = useState('')
+    const [assignedDepartment, setAssignedDepartment] = useState('')
+    const [description, setDescription] = useState('')
 
   return (
     <div>
@@ -83,4 +83,4 @@ const TicketForm = () => {
   )
 }
 
-export default TicketForm
+export default UpdateTicketForm

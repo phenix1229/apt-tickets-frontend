@@ -8,6 +8,8 @@ import StaffHome from './pages/StaffHome'
 import AdminHome from './pages/AdminHome'
 import CreateTicket from './pages/CreateTicket'
 import CreateUser from './pages/CreateUser'
+import UpdateTicket from './pages/UpdateTicket'
+import AddComment from './pages/AddComment'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -19,6 +21,8 @@ const router = createBrowserRouter(
         <Route path='/adminHome' element={<AdminHome />}/>
         <Route path='/createTicket' element={<CreateTicket />}/>
         <Route path='/createUser' element={<CreateUser />}/>
+        <Route path='/updateTicket' element={<UpdateTicket />}/>
+        <Route path='addComment' element={<AddComment />}/>
       </Route>
   )
 )
