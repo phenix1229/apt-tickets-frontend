@@ -1,10 +1,8 @@
 import { Button, FormControl, FormGroup, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import {SyntheticEvent, useState} from 'react'
-// import { submitPost } from '../app/utils';
 import { Navigate } from 'react-router-dom';
 import axios from 'axios';
 
-let data = {"test":"testValue"};
 
 const RegisterUserForm = () => {
   const [firstName, setFirstName] = useState('');
@@ -19,7 +17,6 @@ const RegisterUserForm = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [redirect, setRedirect] = useState(false);
 
-  const keys = [{firstName:firstName}, {lastName:lastName}, {email:email}, {cellNumber:cellNumber}, {phoneNumber:phoneNumber}, {unit:unit}, {department:department}, {role:role}, {password:password}];
 
     const submit = async (e:SyntheticEvent) => {
         e.preventDefault();
