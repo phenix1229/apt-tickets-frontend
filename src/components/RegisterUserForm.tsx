@@ -1,9 +1,12 @@
 import { Button, FormControl, FormGroup, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import {SyntheticEvent, useState} from 'react'
-import { submitPost } from '../app/utils';
+// import { submitPost } from '../app/utils';
 import { Navigate } from 'react-router-dom';
+import axios from 'axios';
 
-const CreateUserForm = () => {
+let data = {"test":"testValue"};
+
+const RegisterUserForm = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -16,6 +19,54 @@ const CreateUserForm = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [redirect, setRedirect] = useState(false);
 
+  const keys = [{firstName:firstName}, {lastName:lastName}, {email:email}, {cellNumber:cellNumber}, {phoneNumber:phoneNumber}, {unit:unit}, {department:department}, {role:role}, {password:password}];
+
+    const submit = async (e:SyntheticEvent) => {
+        e.preventDefault();
+        if(role ==="Admin"){
+          await axios.post('http://localhost:5000/api/users/register', 
+              {
+              firstName,
+              lastName,
+              email,
+              cellNumber,
+              phoneNumber,
+              role,
+              password
+          }
+      );
+        }
+        if(role ==="Staff"){
+          await axios.post('http://localhost:5000/api/users/register', 
+              {
+              firstName,
+              lastName,
+              email,
+              cellNumber,
+              phoneNumber,
+              department,
+              role,
+              password
+          }
+      );
+        }
+        if(role ==="Resident"){
+          await axios.post('http://localhost:5000/api/users/register', 
+              {
+              firstName,
+              lastName,
+              email,
+              cellNumber,
+              phoneNumber,
+              unit,
+              role,
+              password
+          }
+      );
+        }
+    setRedirect(true)
+    }
+
   if(redirect){
     return <Navigate to="/login" />
   }
@@ -25,21 +76,23 @@ const CreateUserForm = () => {
       <br/>
       <br/>
       <br/>
-    <FormControl>
-      <InputLabel id='roleLabel'>Role</InputLabel>
+    <FormGroup>
+      <FormControl>
+
+      <InputLabel id='role'>Role</InputLabel>
       <Select
           required
           labelId='role'
           label='Role'
           id='role'
           value={role}
-          onChange={(Event) => setRole(Event.target.value)}
+          onChange={async (Event) => {await setRole(Event.target.value); }}
           >
           <MenuItem value={'Admin'}>Admin</MenuItem>
           <MenuItem value={'Staff'}>Staff</MenuItem>
           <MenuItem value={'Resident'}>Resident</MenuItem>
         </Select>
-      <FormGroup>
+      </FormControl>
         <TextField
           required
           margin='normal'
@@ -78,20 +131,30 @@ const CreateUserForm = () => {
           value={phoneNumber}
           onChange={(Event) => setPhoneNumber(Event.target.value)}
         />
-        <TextField
+        {role === "Resident" ? (<TextField
           margin='normal'
           id='unit'
           label="Unit"
           value={unit}
           onChange={(Event) => setUnit(Event.target.value)}
-        />
-        <TextField
-          margin='normal'
+        />) : ''}
+
+        {role === "Staff" ? (
+<FormControl>
+          <InputLabel id='department'>Department</InputLabel>
+      <Select
+          labelId='department'
+          label='Department'
           id='department'
-          label="Department"
           value={department}
           onChange={(Event) => setDepartment(Event.target.value)}
-        />
+          >
+          <MenuItem value={'Electrical'}>Electrical</MenuItem>
+          <MenuItem value={'Plumbing'}>Plumbing</MenuItem>
+          <MenuItem value={'Structural'}>Structural</MenuItem>
+        </Select>
+        </FormControl>
+        ) : ''}
         <TextField
           required
           margin='normal'
@@ -108,24 +171,10 @@ const CreateUserForm = () => {
           value={confirmPassword}
           onChange={(Event) => setConfirmPassword(Event.target.value)}
         />
+        <Button variant="contained" onClick={(e)=>{submit(e)}}>Submit</Button>
       </FormGroup>
-      <Button variant='contained' onClick={async (Event:SyntheticEvent)=>{Event.preventDefault(); submitPost("http://localhost:5000/api/users", await {
-        firstName,
-        lastName,
-        email,
-        cellNumber,
-        phoneNumber,
-        unit,
-        department,
-        role,
-        password
-      });
-      setRedirect(true)}}>
-        Submit
-      </Button>
-    </FormControl>
     </div>
   )
 }
 
-export default CreateUserForm
+export default RegisterUserForm

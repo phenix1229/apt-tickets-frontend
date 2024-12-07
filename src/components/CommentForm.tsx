@@ -1,4 +1,4 @@
-import { Checkbox, FormControl, FormControlLabel, FormGroup, TextField } from "@mui/material"
+import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, TextField } from "@mui/material"
 import { useState } from "react"
 
 const CommentsForm = () => {
@@ -22,6 +22,7 @@ const CommentsForm = () => {
              <FormGroup>
                 <FormControlLabel control={<Checkbox id={closeTicket} value={closeTicket} onChange={(Event) => setCloseTicket(Event.target.value)} name="closeTicket" />} label="Close ticket" />
              </FormGroup>
+             <Button variant="contained" onClick={()=>{}}>Submit</Button>
         </FormControl>
       </div>
     )
