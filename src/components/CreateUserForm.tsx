@@ -1,7 +1,7 @@
 import { Button, FormControl, FormGroup, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import {SyntheticEvent, useState} from 'react'
-import { submitPost } from '../app/utils';
-import { Navigate } from 'react-router-dom';
+import axios from 'axios';
+
 
 const CreateUserForm = () => {
   const [firstName, setFirstName] = useState('');
@@ -14,32 +14,81 @@ const CreateUserForm = () => {
   const [role, setRole] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [redirect, setRedirect] = useState(false);
 
-  if(redirect){
-    return <Navigate to="/login" />
-  }
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+
+    const submit = async (e:SyntheticEvent) => {
+        e.preventDefault();
+        try {
+        if(role ==="Admin"){
+          await axios.post('http://localhost:5000/api/users/register', 
+              {
+              firstName,
+              lastName,
+              email,
+              cellNumber:`+1${cellNumber}`,
+              phoneNumber:`+1${phoneNumber}`,
+              role,
+              password
+          }
+      );
+        }
+        if(role ==="Staff"){
+          await axios.post('http://localhost:5000/api/users/register', 
+              {
+              firstName,
+              lastName,
+              email,
+              cellNumber:`+1${cellNumber}`,
+              phoneNumber:`+1${phoneNumber}`,
+              department,
+              role,
+              password
+          }
+      );
+        }
+        if(role ==="Resident"){
+          await axios.post('http://localhost:5000/api/users/register', 
+              {
+              firstName,
+              lastName,
+              email,
+              cellNumber:`+1${cellNumber}`,
+              phoneNumber:`+1${phoneNumber}`,
+              unit,
+              role,
+              password
+          }
+      );
+        }
+        window.location.reload()
+      } catch(error){
+        alert(Response)
+      }
+    }
 
   return (
     <div>
       <br/>
       <br/>
       <br/>
-    <FormControl>
-      <InputLabel id='roleLabel'>Role</InputLabel>
+    <FormGroup>
+      <FormControl>
+
+      <InputLabel id='role'>Role</InputLabel>
       <Select
           required
           labelId='role'
           label='Role'
           id='role'
           value={role}
-          onChange={(Event) => setRole(Event.target.value)}
+          onChange={async (Event) => {await setRole(Event.target.value); }}
           >
           <MenuItem value={'Admin'}>Admin</MenuItem>
           <MenuItem value={'Staff'}>Staff</MenuItem>
           <MenuItem value={'Resident'}>Resident</MenuItem>
         </Select>
-      <FormGroup>
+      </FormControl>
         <TextField
           required
           margin='normal'
@@ -65,6 +114,7 @@ const CreateUserForm = () => {
           onChange={(Event) => setEmail(Event.target.value)}
         />
         <TextField
+          required
           margin='normal'
           id='cellNumber'
           label="Cell number"
@@ -72,28 +122,55 @@ const CreateUserForm = () => {
           onChange={(Event) => setCellNumber(Event.target.value)}
         />
         <TextField
+          required
           margin='normal'
           id='phoneNumber'
           label="Phone number"
           value={phoneNumber}
           onChange={(Event) => setPhoneNumber(Event.target.value)}
         />
-        <TextField
+        {role === "Resident" ? (<TextField
+          required
           margin='normal'
           id='unit'
           label="Unit"
           value={unit}
           onChange={(Event) => setUnit(Event.target.value)}
-        />
-        <TextField
-          margin='normal'
+        />) : ''}
+
+        {role === "Staff" ? (
+<FormControl>
+          <InputLabel id='department'>Department</InputLabel>
+      <Select
+        required
+          labelId='department'
+          label='Department'
           id='department'
-          label="Department"
           value={department}
           onChange={(Event) => setDepartment(Event.target.value)}
-        />
+          >
+          <MenuItem value={'Electrical'}>Electrical</MenuItem>
+          <MenuItem value={'Plumbing'}>Plumbing</MenuItem>
+          <MenuItem value={'Structural'}>Structural</MenuItem>
+        </Select>
+        </FormControl>
+        ) : ''}
         <TextField
           required
+          error={!regex.test(password) && password !== ''}
+          helperText={
+            <>
+              At least 8 characters
+              <br/>
+              Contain at least one lowercase letter
+              <br/>
+              Contain at least one uppercase letter
+              <br/>
+              Contain at least one number
+              <br/>
+              Contain at least one special character
+            </>
+          }
           margin='normal'
           id='password'
           label="Password"
@@ -102,28 +179,16 @@ const CreateUserForm = () => {
         />
         <TextField
           required
+          error={confirmPassword !== password && confirmPassword !== ''}
+          helperText='Must match password'
           margin='normal'
           id='confirmPassword'
           label="Confirm password"
           value={confirmPassword}
           onChange={(Event) => setConfirmPassword(Event.target.value)}
         />
+        <Button variant="contained" onClick={(e)=>{submit(e)}}>Submit</Button>
       </FormGroup>
-      <Button variant='contained' onClick={async (Event:SyntheticEvent)=>{Event.preventDefault(); submitPost("http://localhost:5000/api/users", await {
-        firstName,
-        lastName,
-        email,
-        cellNumber,
-        phoneNumber,
-        unit,
-        department,
-        role,
-        password
-      });
-      setRedirect(true)}}>
-        Submit
-      </Button>
-    </FormControl>
     </div>
   )
 }
