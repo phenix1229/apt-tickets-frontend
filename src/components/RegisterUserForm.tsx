@@ -1,4 +1,4 @@
-import { Button, FormGroup, TextField } from '@mui/material';
+import { Button, Container, FormGroup, TextField } from '@mui/material';
 import {SyntheticEvent, useState} from 'react'
 import { Navigate } from 'react-router-dom';
 import axios from 'axios';
@@ -23,7 +23,7 @@ const RegisterUserForm = () => {
         try{
           if(password === confirmPassword){
 
-            const response = await axios.post('http://localhost:5000/api/users/register', 
+            const response = await axios.post('users/register', 
                 {
                 firstName,
                 lastName,
@@ -49,7 +49,7 @@ const RegisterUserForm = () => {
   }
 
   return (
-    <div>
+    <Container>
       <br/>
       <br/>
       <br/>
@@ -139,7 +139,7 @@ const RegisterUserForm = () => {
         />
         <Button variant="contained" onClick={(e)=>{submit(e)}}>Submit</Button>
       </FormGroup>
-    </div>
+      </Container>
   )
 }
 

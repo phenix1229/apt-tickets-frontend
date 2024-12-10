@@ -1,4 +1,4 @@
-import { Button, FormControl, FormGroup, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Button, Container, FormControl, FormGroup, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import {SyntheticEvent, useState} from 'react'
 import axios from 'axios';
 
@@ -21,7 +21,7 @@ const CreateUserForm = () => {
         e.preventDefault();
         try {
         if(role ==="Admin"){
-          await axios.post('http://localhost:5000/api/users/register', 
+          const response:any = await axios.post('http://localhost:5000/api/users/register', 
               {
               firstName,
               lastName,
@@ -32,9 +32,10 @@ const CreateUserForm = () => {
               password
           }
       );
+      alert(response.data.message)
         }
         if(role ==="Staff"){
-          await axios.post('http://localhost:5000/api/users/register', 
+          const response:any = await axios.post('http://localhost:5000/api/users/register', 
               {
               firstName,
               lastName,
@@ -45,10 +46,11 @@ const CreateUserForm = () => {
               role,
               password
           }
-      );
+        );
+        alert(response.data.message)
         }
         if(role ==="Resident"){
-          await axios.post('http://localhost:5000/api/users/register', 
+          const response: any = await axios.post('http://localhost:5000/api/users/register', 
               {
               firstName,
               lastName,
@@ -60,18 +62,20 @@ const CreateUserForm = () => {
               password
           }
       );
+      alert(response.data.message)
         }
         window.location.reload()
-      } catch(error){
-        alert(Response)
+      } catch(error:any){
+        alert(error.response.data)
       }
     }
 
   return (
-    <div>
+    <Container>
       <br/>
       <br/>
       <br/>
+      <h2>Please complete all fields</h2>
     <FormGroup>
       <FormControl>
 
@@ -139,8 +143,8 @@ const CreateUserForm = () => {
         />) : ''}
 
         {role === "Staff" ? (
-<FormControl>
-          <InputLabel id='department'>Department</InputLabel>
+      <FormControl>
+          <InputLabel id='department'>Department *</InputLabel>
       <Select
         required
           labelId='department'
@@ -189,7 +193,7 @@ const CreateUserForm = () => {
         />
         <Button variant="contained" onClick={(e)=>{submit(e)}}>Submit</Button>
       </FormGroup>
-    </div>
+    </Container>
   )
 }
 

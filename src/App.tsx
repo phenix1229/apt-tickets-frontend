@@ -11,6 +11,8 @@ import CreateUser from './pages/CreateUser'
 import UpdateTicket from './pages/UpdateTicket'
 import AddComment from './pages/AddComment'
 import Register from './pages/Register'
+import ViewTicket from './pages/ViewTicket'
+import ViewAllTickets from './pages/ViewAllTickets'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,6 +27,8 @@ const router = createBrowserRouter(
         <Route path='/updateTicket' element={<UpdateTicket />}/>
         <Route path='addComment' element={<AddComment />}/>
         <Route path='register' element={<Register />}/>
+        <Route path='viewTicket' element={<ViewTicket />}/>
+        <Route path='viewAllTickets' element={<ViewAllTickets />}/>
       </Route>
   )
 )

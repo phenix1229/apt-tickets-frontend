@@ -1,15 +1,38 @@
-import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, TextField } from "@mui/material"
-import { useState } from "react"
+import { Button, Checkbox, Container, FormControl, FormControlLabel, FormGroup, TextField } from "@mui/material"
+import { SyntheticEvent, useState } from "react"
+import { Navigate } from "react-router-dom"
+import axios from "axios"
 
-const CommentsForm = () => {
+const CommentsForm = (id:any) => {
     const [comment, setComment] = useState('')
-    const [closeTicket, setCloseTicket] = useState('')
+    const [closeTicket, setCloseTicket] = useState('Active')
+    const [redirect, setRedirect] = useState(false)
+
+    const submit = async (e:SyntheticEvent) => {
+      e.preventDefault()
+      try {
+        const response:any = await axios.patch(`http://localhost:5000/api/tickets/${id.id}`, {
+          comment,
+          ticketStatus:closeTicket
+        })
+        alert(JSON.stringify(response.data.message));
+        setRedirect(true)
+      }
+     catch(error:any){
+      alert(JSON.stringify(error.response.data.message))
+    }
+  }
+
+if(redirect){
+  return <Navigate to={"/ViewTicket"} />
+}
+
     return (
-      <div>
+      <Container>
         <br/>
         <br/>
         <br/>
-        <FormControl>
+        <h2>Please enter new comment</h2>
             <TextField 
                 required
                 multiline
@@ -18,13 +41,14 @@ const CommentsForm = () => {
                 label="Comment"
                 value={comment}
                 onChange={(Event) => setComment(Event.target.value)}
-             />
+                />
              <FormGroup>
-                <FormControlLabel control={<Checkbox id={closeTicket} value={closeTicket} onChange={(Event) => setCloseTicket(Event.target.value)} name="closeTicket" />} label="Close ticket" />
-             </FormGroup>
-             <Button variant="contained" onClick={()=>{}}>Submit</Button>
+                <FormControlLabel control={<Checkbox id={closeTicket} value={closeTicket} onChange={() => setCloseTicket('Inactive')} name="closeTicket" />} label="Close ticket" />
+                <FormControl>
+             <Button variant="contained" onClick={(e) => submit(e)}>Submit</Button>
         </FormControl>
-      </div>
+             </FormGroup>
+      </Container>
     )
   }
   
