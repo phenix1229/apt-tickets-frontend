@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { AppBar, Button, Toolbar, useScrollTrigger } from '@mui/material'
 import axios from 'axios';
@@ -23,9 +23,33 @@ function ElevationScroll(props: any) {
 }
 
 const Navbar = () => {
-  const auth = useSelector((state:RootState) => state.auth.value);
-  const user = useSelector((state:RootState) => state.user.user)
   const dispatch = useDispatch()
+
+  useEffect(()=>{
+    (async () => {
+      try{
+        const {data}:any = await axios.get('http://localhost:5000/api/users/authUser')
+        dispatch(setUser({
+          role:data.role,
+          firstName:data.firstName,
+          lastName:data.lastName,
+          email:data.email,
+          cellNumber:data.cellNumber,
+          phoneNumber:data.phoneNumber,
+          unit:data.unit,
+          department:data.department
+        }))
+        if(sessionStorage.user){
+          dispatch(setAuth(true))
+        }
+      } catch(error:any) {
+        alert(error.response.data.message)
+      }
+    })();
+  }, []);
+
+  const user:any = useSelector((state:RootState) => state.user.user)
+  const auth:boolean = useSelector((state:RootState) => state.auth.value)
 
   const logout = async () => {
     await axios.post('http://localhost:5000/api/users/logout', {}, {withCredentials:true});
@@ -40,7 +64,9 @@ const Navbar = () => {
       phoneNumber:'',
       unit:'',
       department:''
-    }))
+    }));
+    window.sessionStorage.clear()
+    // window.location.reload()
     return <Navigate to="/" />
   }
 
@@ -76,3 +102,7 @@ const Navbar = () => {
 }
 
 export default Navbar
+function dispatch(arg0: { payload: any; type: "user/setUser"; }) {
+  throw new Error('Function not implemented.');
+}
+

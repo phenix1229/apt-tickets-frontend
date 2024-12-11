@@ -10,6 +10,7 @@ export const authSlice = createSlice({
     reducers:{
         setAuth: (state, action) => {
             state.value = action.payload;
+            window.sessionStorage.setItem("auth", JSON.stringify(action.payload))
         }
     }
 })

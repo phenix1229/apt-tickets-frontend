@@ -1,8 +1,14 @@
 
 import Box from '@mui/material/Box';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridEventListener, GridToolbarContainer, GridToolbarFilterButton } from '@mui/x-data-grid';
 import axios from 'axios';
 import '../interceptors/axios'
+import { useEffect, useState } from 'react';
+import { Navigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setTicket } from '../app/ticketSlice';
+
+
 
 const columns: GridColDef<(typeof rows)[number]>[] = [
   { field: 'id', headerName: 'ID', width: 220 },
@@ -10,56 +16,96 @@ const columns: GridColDef<(typeof rows)[number]>[] = [
     field: 'openDate',
     headerName: 'Open date',
     width: 150,
-    // editable: true,
   },
   {
     field: 'clientName',
     headerName: 'Client name',
     width: 150,
-    // editable: true,
   },
   {
     field: 'clientLocation',
     headerName: 'Client location',
-    // type: 'number',
     width: 110,
-    // editable: true,
   },
   {
     field: 'description',
     headerName: 'Description',
-    // description: 'This column has a value getter and is not sortable.',
     sortable: false,
     width: 260,
-    // valueGetter: (value, row) => `${row.firstName || ''} ${row.lastName || ''}`,
   },
 ];
 
-const rows:object[] = [];
 
-const ticketRows = async () => {
-    const {data}:any = await axios.get('http://localhost:5000/api/tickets/all')
-    for(const ticket of data){
-        rows.push({
-            id:ticket._id,
-            openDate:ticket.openDate,
-            clientName:ticket.clientName,
-            clientLocation:ticket.clientLocation,
-            description:ticket.description
-        })
-    }
-}
-ticketRows()
-export default function TicketsViewer() {
+
+
+
+
+
+
+
+
+
+const custonToolbar = () => {
   return (
-    
+    <GridToolbarContainer>
+      <GridToolbarFilterButton />
+    </GridToolbarContainer>
+  )
+}
+const rows:any = [];
+
+export default function TicketsViewer() {
+  const [redirect, setRedirect] = useState(false)
+  const [tickets, setTickets] = useState([])
+const dispatch = useDispatch();
+
+useEffect(() => {
+  (async ()=> { 
+    try{
+      await axios.get('http://localhost:5000/api/tickets/all')
+    .then((response:any) => {
+      const stringData:any = JSON.stringify(response.data)
+      const editData =stringData.replaceAll("_id","id")
+      setTickets(JSON.parse(editData))
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+} catch(error){}})();
+}, []);
+
+// const ticketRows =  () => {
+//       const ticketsRow:object[] = []
+//       for(const item of tickets){
+//           ticketsRow.push({
+//             item
+//           });
+//         }
+//         return ticketsRow
+//     }
+
+  
+
+  const rowClicked: GridEventListener<'rowClick'> = async (params) => {
+    const {data} = await axios.get(`http://localhost:5000/api/tickets/${params.row.id}`)
+    dispatch(setTicket(data))
+    setRedirect(true)
+    // alert(`Movie "${params.row.id}" clicked`);
+  };
+
+
+  if(redirect){
+    return <Navigate to="/viewTicket" />
+  }
+
+  return (
     <Box sx={{ height: 400, width: '100%' }}>
         <br/>
         <br/>
-        {/* <br/> */}
       <DataGrid
-        rows={rows}
+        rows={tickets}
         columns={columns}
+        onRowClick={rowClicked}
         initialState={{
           pagination: {
             paginationModel: {
@@ -68,8 +114,7 @@ export default function TicketsViewer() {
           },
         }}
         pageSizeOptions={[10]}
-        checkboxSelection
-        disableRowSelectionOnClick
+        slots={{toolbar:custonToolbar}}
       />
     </Box>
   );

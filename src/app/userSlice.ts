@@ -19,6 +19,7 @@ export const userSlice = createSlice({
     reducers:{
         setUser: (state, action) => {
             state.user = action.payload;
+            window.sessionStorage.setItem("user", JSON.stringify(action.payload))
         }
     }
 })
