@@ -6,6 +6,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../app/store';
 import { setAuth } from '../app/authSlice';
 import { setUser } from '../app/userSlice';
+import { setTicket } from '../app/ticketSlice';
+import { setTickets } from '../app/ticketsSlice';
 
 function ElevationScroll(props: any) {
   const { children, window } = props;
@@ -48,7 +50,7 @@ const Navbar = () => {
     })();
   }, []);
 
-  const user:any = useSelector((state:RootState) => state.user.user)
+  // const user:any = useSelector((state:RootState) => state.user.user)
   const auth:boolean = useSelector((state:RootState) => state.auth.value)
 
   const logout = async () => {
@@ -65,8 +67,19 @@ const Navbar = () => {
       unit:'',
       department:''
     }));
+    dispatch(setTicket({
+      openedBy:'',
+        clientName:'',
+        clientCell:'',
+        clientPhone:'',
+        clientEmail:'',
+        clientLocation:'',
+        assignedDepartment:'',
+        description:'',
+        updateComments:[]
+    }))
+    dispatch(setTickets([]))
     window.sessionStorage.clear()
-    // window.location.reload()
     return <Navigate to="/" />
   }
 
@@ -89,7 +102,7 @@ const Navbar = () => {
         {auth && <Link to="./Users.tsx">
         <Button variant='contained' disableElevation>Users</Button>
         </Link>}
-        {user.role === 'Admin' && <Link to="/ViewAllTickets">
+        {auth && <Link to="/ViewAllTickets">
         <Button variant='contained' disableElevation>Tickets</Button>
         </Link>}
         {auth && <Link to="/" onClick={ logout}>
@@ -102,7 +115,7 @@ const Navbar = () => {
 }
 
 export default Navbar
-function dispatch(arg0: { payload: any; type: "user/setUser"; }) {
-  throw new Error('Function not implemented.');
-}
+// function dispatch(arg0: { payload: any; type: "user/setUser"; }) {
+//   throw new Error('Function not implemented.');
+// }
 

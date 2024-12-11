@@ -6,7 +6,7 @@ import { RootState } from "../app/store"
 // const dispatch = useDispatch();
 
 const ViewTicket = () => {
-  const ticket = useSelector((state:RootState) => state.ticket)
+  const ticket = useSelector((state:RootState) => state.ticket.ticket)
   // useEffect(()=>{
   //   (async () => {
   //     try{

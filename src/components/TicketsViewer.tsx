@@ -5,13 +5,19 @@ import axios from 'axios';
 import '../interceptors/axios'
 import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setTicket } from '../app/ticketSlice';
+import { setTickets } from '../app/ticketsSlice';
+import { RootState } from '../app/store';
+import { Container } from '@mui/material';
 
 
 
 const columns: GridColDef<(typeof rows)[number]>[] = [
-  { field: 'id', headerName: 'ID', width: 220 },
+  { 
+    field: 'id', 
+    headerName: 'ID', 
+    width: 220 },
   {
     field: 'openDate',
     headerName: 'Open date',
@@ -33,19 +39,16 @@ const columns: GridColDef<(typeof rows)[number]>[] = [
     sortable: false,
     width: 260,
   },
+  {
+    field: 'ticketStatus',
+    headerName: 'Status',
+    width: 70,
+  }
 ];
 
 
 
-
-
-
-
-
-
-
-
-const custonToolbar = () => {
+const customToolbar = () => {
   return (
     <GridToolbarContainer>
       <GridToolbarFilterButton />
@@ -55,42 +58,61 @@ const custonToolbar = () => {
 const rows:any = [];
 
 export default function TicketsViewer() {
-  const [redirect, setRedirect] = useState(false)
-  const [tickets, setTickets] = useState([])
+const [redirect, setRedirect] = useState(false)
+const [filteredTickets, setFilteredTickets] = useState([])
 const dispatch = useDispatch();
+let user:any = useSelector((state:RootState) => state.user.user);
+let tickets:any = useSelector((state:RootState) => state.tickets.tickets);
 
 useEffect(() => {
   (async ()=> { 
+    if(user.role === "Resident"){
+      try{
+        await axios.get(`http://localhost:5000/api/tickets/byEmail/${user.email}`)
+      .then((response:any) => {
+        const stringData:any = JSON.stringify(response.data)
+        const editData =stringData.replaceAll("_id","id")
+        dispatch(setTickets(JSON.parse(editData)))
+        setFilteredTickets(JSON.parse(editData))
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+    } catch(error){}
+  }
+    if(user.role === "Staff"){
+      try{
+        await axios.get(`http://localhost:5000/api/tickets/byDepartment/${user.department}`)
+      .then((response:any) => {
+        const stringData:any = JSON.stringify(response.data)
+        const editData =stringData.replaceAll("_id","id")
+        dispatch(setTickets(JSON.parse(editData)))
+        setFilteredTickets(JSON.parse(editData))
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+    } catch(error){}
+  } else{
     try{
       await axios.get('http://localhost:5000/api/tickets/all')
     .then((response:any) => {
       const stringData:any = JSON.stringify(response.data)
       const editData =stringData.replaceAll("_id","id")
-      setTickets(JSON.parse(editData))
+      dispatch(setTickets(JSON.parse(editData)))
+      setFilteredTickets(JSON.parse(editData))
     })
     .catch(error => {
       console.error('Error fetching data:', error);
     });
-} catch(error){}})();
-}, []);
+  } catch(error){}
+  }})();
+  }, []);
 
-// const ticketRows =  () => {
-//       const ticketsRow:object[] = []
-//       for(const item of tickets){
-//           ticketsRow.push({
-//             item
-//           });
-//         }
-//         return ticketsRow
-//     }
-
-  
 
   const rowClicked: GridEventListener<'rowClick'> = async (params) => {
-    const {data} = await axios.get(`http://localhost:5000/api/tickets/${params.row.id}`)
-    dispatch(setTicket(data))
+    dispatch(setTicket(tickets.find((ticket:any) => ticket.id === `${params.row.id}`)))
     setRedirect(true)
-    // alert(`Movie "${params.row.id}" clicked`);
   };
 
 
@@ -98,12 +120,16 @@ useEffect(() => {
     return <Navigate to="/viewTicket" />
   }
 
+
   return (
+    <Container>
+        <h2>All* tickets are displayed by default, please use filters to customize your view</h2>
+        <p>* Active and inactve</p>
     <Box sx={{ height: 400, width: '100%' }}>
         <br/>
         <br/>
       <DataGrid
-        rows={tickets}
+        rows={filteredTickets}
         columns={columns}
         onRowClick={rowClicked}
         initialState={{
@@ -114,8 +140,9 @@ useEffect(() => {
           },
         }}
         pageSizeOptions={[10]}
-        slots={{toolbar:custonToolbar}}
+        slots={{toolbar:customToolbar}}
       />
     </Box>
+    </Container>
   );
 }

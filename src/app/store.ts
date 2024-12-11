@@ -2,12 +2,14 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import authReducer from './authSlice';
 import userReducer from './userSlice';
 import ticketReducer from './ticketSlice';
+import ticketsReducer from './ticketsSlice'
 
 
 const rootReducer = combineReducers({
     user: userReducer,
     auth: authReducer,
-    ticket: ticketReducer
+    ticket: ticketReducer,
+    tickets: ticketsReducer
 })
 
 
