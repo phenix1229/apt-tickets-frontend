@@ -1,12 +1,14 @@
 
-import { Box, Container, FormControl, FormGroup, Grid2, InputLabel, MenuItem, Paper, Select, styled, TextField } from '@mui/material'
-import { useState } from 'react'
+import { Button, Container, Grid2, TextField } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { RootState } from '../app/store'
-import React from 'react'
+import React, { useState } from 'react'
+import UpdateTicket from './UpdateTicket'
 
 const ViewTicket = () => {
+  const [editing, setEditing] = useState(false)
   const ticket:any = useSelector((state:RootState) => state.ticket.ticket)
+  const user:any = useSelector((state:RootState) => state.user.user)
 
   const Item = (label:string, id:string, value:string) => {
     return (
@@ -46,27 +48,27 @@ const ViewTicket = () => {
       <br/>
       <br/>
       <br/>
-      <h3>Ticket</h3>
       <br/>
-      <Container sx={{width:'50%'}}>
+      {(user.role !== 'Staff' && !editing) && <Container sx={{width:'50%'}}>
+      <h2>Ticket</h2>
       <Grid2 container rowSpacing={1} columnSpacing={1}>
         <Grid2 size={4}>
-          {Item('ID', 'id', ticket.id,)}
+          {Item('ID', 'id', ticket.id)}
         </Grid2>
         <Grid2 size={4}>
-          {Item('Client name', 'clientName', ticket.clientName,)}
+          {Item('Client name', 'clientName', ticket.clientName)}
         </Grid2>
         <Grid2 size={4}>
-          {Item('Client email', 'clientEmail', ticket.clientEmail,)}
+          {Item('Client email', 'clientEmail', ticket.clientEmail)}
         </Grid2>
         <Grid2 size={4}>
-          {Item('Client cell', 'clientCell', ticket.clientCell,)}
+          {Item('Client cell', 'clientCell', ticket.clientCell)}
         </Grid2>
         <Grid2 size={4}>
-          {Item('Client phone', 'clientPhone', ticket.clientPhone,)}
+          {Item('Client phone', 'clientPhone', ticket.clientPhone)}
         </Grid2>
         <Grid2 size={4}>
-          {Item('Clent location', 'clientLocation', ticket.clientLocation,)}
+          {Item('Client location', 'clientLocation', ticket.clientLocation)}
         </Grid2>
       </Grid2>
           <TextField sx={{width:'100%'}}
@@ -77,12 +79,19 @@ const ViewTicket = () => {
             label="Description"
             value={ticket.description}
           />
-          <>
           {ticket.updateComments.length > 0 && 
             updates(ticket.updateComments)
           }
-          </>
-        </Container>
+        </Container>}
+        {(user.role !== 'Staff' && editing) && (
+          <UpdateTicket />
+        )}
+          <Container>
+          {user.role !== 'Staff' && (
+            <Button variant='contained' style={{marginBottom:"8px"}} onClick={(e:any) => {setEditing(!editing)}}>{editing === false ? 'Edit ticket' : 'Cancel'}</Button>
+          )}
+          </Container>
+
     </div>
   )
 }
