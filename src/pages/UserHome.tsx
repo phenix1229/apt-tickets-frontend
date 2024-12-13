@@ -1,13 +1,13 @@
 import { Container } from '@mui/material'
 import axios from 'axios'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch } from 'react-redux';
 import { setAuth } from '../app/authSlice';
 import '../interceptors/axios'
 import { setUser } from '../app/userSlice';
+import UserOptions from '../components/UserOptions';
 
 const UserHome = () => {
-  const [message, setMessage] = useState('');
   const dispatch = useDispatch();
   
   useEffect(()=>{
@@ -24,7 +24,6 @@ const UserHome = () => {
           unit:data.unit,
           department:data.department
         }))
-        setMessage(`Welcome ${data.firstName}`);
         dispatch(setAuth(true))
       } catch(error:any) {
         dispatch(setAuth(false))
@@ -34,7 +33,7 @@ const UserHome = () => {
 
   return (
     <Container>
-      <h3>{message}</h3>
+      <UserOptions />
     </Container>
   )
 }

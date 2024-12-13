@@ -18,8 +18,10 @@ const CommentsForm = () => {
         return alert('Ticket is inactive and cannot be commented on')
       }
       try {
+        alert(`${user.firstName} ${user.lastName}`)
         const response:any = await axios.patch(`http://localhost:5000/api/tickets/${ticket.id}`, {
-          updatedBy:`${user.firstName} ${user.lastName}`,
+          firstName:user.firstName,
+          lastName:user.lastName,
           comment,
           ticketStatus:closeTicket
         })

@@ -78,9 +78,7 @@ const ViewUser = () => {
             <UpdateUserForm />
         )}
         <Container>
-          {selectedUser.userStatus !== 'Inactive' && (
             <Button variant='contained' style={{marginBottom:"8px"}} onClick={() => {setEditing(!editing)}}>{editing === false ? 'Edit user' : 'Cancel'}</Button>
-          )}
           </Container>
           {editing === false && (<FormControl>
             <Button variant='contained' onClick={() => {setRedirect('back')}}>Back</Button>

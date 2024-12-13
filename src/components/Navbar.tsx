@@ -8,6 +8,8 @@ import { setAuth } from '../app/authSlice';
 import { setUser } from '../app/userSlice';
 import { setTicket } from '../app/ticketSlice';
 import { setTickets } from '../app/ticketsSlice';
+import { setSelectedUser } from '../app/selectedUserslice';
+import { setUsers } from '../app/usersSlice';
 
 function ElevationScroll(props: any) {
   const { children, window } = props;
@@ -67,6 +69,16 @@ const Navbar = () => {
       unit:'',
       department:''
     }));
+    dispatch(setSelectedUser({
+      role:'',
+      firstName:'',
+      lastName:'',
+      email:'',
+      cellNumber:'',
+      phoneNumber:'',
+      unit:'',
+      department:''
+    }))
     dispatch(setTicket({
       openedBy:'',
         clientName:'',
@@ -79,6 +91,7 @@ const Navbar = () => {
         updateComments:[]
     }))
     dispatch(setTickets([]))
+    dispatch(setUsers([]))
     window.sessionStorage.clear()
     return <Navigate to="/" />
   }
@@ -100,10 +113,16 @@ const Navbar = () => {
         <Button variant='contained' disableElevation>Register</Button>
         </Link>}
         {(auth && user.role === 'Admin') && <Link to="/ViewAllUsers">
-        <Button variant='contained' disableElevation>Users</Button>
+        <Button variant='contained' disableElevation>View users</Button>
+        </Link>}
+        {(auth && user.role === 'Admin') && <Link to="/CreateUser">
+        <Button variant='contained' disableElevation>New user</Button>
         </Link>}
         {auth && <Link to="/ViewAllTickets">
-        <Button variant='contained' disableElevation>Tickets</Button>
+        <Button variant='contained' disableElevation>View tickets</Button>
+        </Link>}
+        {(auth && user.role !== 'Staff') && <Link to="/CreateTicket">
+        <Button variant='contained' disableElevation>New ticket</Button>
         </Link>}
         {auth && <Link to="/" onClick={ logout}>
         <Button variant='contained' disableElevation>Logout</Button>
@@ -115,7 +134,4 @@ const Navbar = () => {
 }
 
 export default Navbar
-// function dispatch(arg0: { payload: any; type: "user/setUser"; }) {
-//   throw new Error('Function not implemented.');
-// }
 

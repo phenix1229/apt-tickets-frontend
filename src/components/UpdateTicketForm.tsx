@@ -21,7 +21,7 @@ const UpdateTicketForm = () => {
 
     const submit = async (e:SyntheticEvent) => {
       e.preventDefault()
-      await axios.put(`http://localhost:5000/api/tickets/${ticket.id}`, {
+      await axios.put(`tickets/${ticket.id}`, {
       clientName,
       clientPhone,
       clientCell,
