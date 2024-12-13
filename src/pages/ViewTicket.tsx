@@ -2,7 +2,7 @@
 import { Button, Container, FormControl, Grid2, TextField } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { RootState } from '../app/store'
-import React, { SyntheticEvent, useState } from 'react'
+import React, { useState } from 'react'
 import UpdateTicket from './UpdateTicket'
 import { Navigate } from 'react-router-dom'
 import '../interceptors/axios'
@@ -108,7 +108,7 @@ const ViewTicket = () => {
         )}
           <Container>
           {user.role !== 'Staff' && (
-            <Button variant='contained' style={{marginBottom:"8px"}} onClick={(e:any) => {setEditing(!editing)}}>{editing === false ? 'Edit ticket' : 'Cancel'}</Button>
+            <Button variant='contained' style={{marginBottom:"8px"}} onClick={() => {setEditing(!editing)}}>{editing === false ? 'Edit ticket' : 'Cancel'}</Button>
           )}
           </Container>
 
