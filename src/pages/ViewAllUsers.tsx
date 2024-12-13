@@ -1,8 +1,8 @@
-import { Container } from "@mui/material";
+import UsersViewer from "../components/UsersViewer";
 
 const ViewAllUsers = () => {
     return (
-        <Container></Container>
+        <UsersViewer />
     )
 };
 

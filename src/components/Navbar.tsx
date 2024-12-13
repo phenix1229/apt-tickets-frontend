@@ -50,7 +50,7 @@ const Navbar = () => {
     })();
   }, []);
 
-  // const user:any = useSelector((state:RootState) => state.user.user)
+  const user:any = useSelector((state:RootState) => state.user.user)
   const auth:boolean = useSelector((state:RootState) => state.auth.value)
 
   const logout = async () => {
@@ -87,19 +87,19 @@ const Navbar = () => {
     <ElevationScroll>
     <AppBar>
       <Toolbar>
-        {!auth && <Link to="./">
+        {!auth && <Link to="/">
           <Button variant='contained' disableElevation>Home</Button>
         </Link>}
-        {auth && <Link to="./userHome">
+        {auth && <Link to="/userHome">
           <Button variant='contained' disableElevation>Home</Button>
         </Link>}
-        {!auth && <Link to="./Login">
+        {!auth && <Link to="/Login">
         <Button variant='contained' disableElevation>Login</Button>
         </Link>}
-        {!auth && <Link to="./Register">
+        {!auth && <Link to="/Register">
         <Button variant='contained' disableElevation>Register</Button>
         </Link>}
-        {auth && <Link to="./Users.tsx">
+        {(auth && user.role === 'Admin') && <Link to="/ViewAllUsers">
         <Button variant='contained' disableElevation>Users</Button>
         </Link>}
         {auth && <Link to="/ViewAllTickets">
