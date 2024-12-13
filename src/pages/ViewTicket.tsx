@@ -98,19 +98,24 @@ const ViewTicket = () => {
               {ticket.ticketStatus === 'Active' && (
                 <Button variant='contained' style={{marginBottom:'8px'}} onClick={() => setRedirect('comment')}>Add comment</Button>
               )}
-          {user.role === 'Staff' && (
+          {/* {user.role === 'Staff' && (
             <Button variant='contained' onClick={() => {setRedirect('back')}}>Back</Button>
-          )}
+          )} */}
             </FormControl>
         </Container>}
+        <Container>
         {(user.role !== 'Staff' && editing) && (
           <UpdateTicket />
         )}
-          <Container>
-          {user.role !== 'Staff' && (
+          {(user.role !== 'Staff' && ticket.ticketStatus !== 'Inactive') && (
             <Button variant='contained' style={{marginBottom:"8px"}} onClick={() => {setEditing(!editing)}}>{editing === false ? 'Edit ticket' : 'Cancel'}</Button>
           )}
           </Container>
+          <FormControl>
+          {/* {user.role === 'Staff' && ( */}
+            <Button variant='contained' onClick={() => {setRedirect('back')}}>Back</Button>
+          {/* )} */}
+          </FormControl>
 
     </div>
   )

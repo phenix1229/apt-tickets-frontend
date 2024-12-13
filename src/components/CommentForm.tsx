@@ -10,6 +10,7 @@ const CommentsForm = () => {
     const [closeTicket, setCloseTicket] = useState('Active')
     const [redirect, setRedirect] = useState(false)
     const ticket:any = useSelector((state:RootState) => state.ticket.ticket)
+    const user:any = useSelector((state:RootState) => state.user.user)
 
     const submit = async (e:SyntheticEvent) => {
       e.preventDefault()
@@ -18,6 +19,7 @@ const CommentsForm = () => {
       }
       try {
         const response:any = await axios.patch(`http://localhost:5000/api/tickets/${ticket.id}`, {
+          updatedBy:`${user.firstName} ${user.lastName}`,
           comment,
           ticketStatus:closeTicket
         })
@@ -49,7 +51,7 @@ if(redirect){
                 onChange={(Event) => setComment(Event.target.value)}
                 />
              <FormGroup>
-                <FormControlLabel control={<Checkbox id={closeTicket} value={closeTicket} onChange={() => setCloseTicket('Inactive')} name="closeTicket" />} label="Close ticket" />
+                <FormControlLabel control={<Checkbox id={closeTicket} value={closeTicket} onChange={() => {setCloseTicket('Inactive')}} name="closeTicket" />} label="Close ticket" />
                   <Container>
 
                 <FormControl>

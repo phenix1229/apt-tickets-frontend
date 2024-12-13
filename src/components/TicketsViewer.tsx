@@ -59,7 +59,6 @@ const rows:any = [];
 
 export default function TicketsViewer() {
 const [redirect, setRedirect] = useState(false)
-// const [filteredTickets, setFilteredTickets] = useState([])
 const dispatch = useDispatch();
 let user:any = useSelector((state:RootState) => state.user.user);
 let tickets:any = useSelector((state:RootState) => state.tickets.tickets);
@@ -73,7 +72,6 @@ useEffect(() => {
         const stringData:any = JSON.stringify(response.data)
         const editData =stringData.replaceAll("_id","id")
         dispatch(setTickets(JSON.parse(editData)))
-        // setFilteredTickets(JSON.parse(editData))
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -87,7 +85,6 @@ useEffect(() => {
         const stringData:any = JSON.stringify(response.data)
         const editData =stringData.replaceAll("_id","id")
         dispatch(setTickets(JSON.parse(editData)))
-        // setFilteredTickets(JSON.parse(editData))
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -101,7 +98,6 @@ useEffect(() => {
       const stringData:any = JSON.stringify(response.data)
       const editData =stringData.replaceAll("_id","id")
       dispatch(setTickets(JSON.parse(editData)))
-      // setFilteredTickets(JSON.parse(editData))
     })
     .catch(error => {
       console.error('Error fetching data:', error);
@@ -110,7 +106,7 @@ useEffect(() => {
   }})();
   }, []);
 
-
+  
   const rowClicked: GridEventListener<'rowClick'> = async (params) => {
     dispatch(setTicket(tickets.find((ticket:any) => ticket.id === `${params.row.id}`)))
     setRedirect(true)
@@ -121,7 +117,7 @@ useEffect(() => {
     return <Navigate to="/viewTicket" />
   }
 
-
+  
   return (
     <Container>
         <h2>All* tickets are displayed by default, please use filters to customize your view</h2>

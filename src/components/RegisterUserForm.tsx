@@ -21,9 +21,7 @@ const RegisterUserForm = () => {
     const submit = async (e:SyntheticEvent) => {
         e.preventDefault();
         try{
-          if(password === confirmPassword){
-
-            const response = await axios.post('users/register', 
+            const response:any = await axios.post('users/register', 
                 {
                 firstName,
                 lastName,
@@ -35,12 +33,15 @@ const RegisterUserForm = () => {
                 password
             }
         )
-        alert(JSON.stringify(response))
+        if(response.data){
+          alert(JSON.stringify(response.data.message))
+        }
+        if(response.message){
+          return alert('Username/email already exists')
+        }
         setRedirect(true)
-          }} catch(error:any) {
-            alert(
-              JSON.stringify(error.response.data.message)
-            )
+          } catch(error:any) {
+            alert(error)
           }
     }
 
@@ -81,7 +82,7 @@ const RegisterUserForm = () => {
         />
         <TextField
           required
-          helperText='Format (111)222-3333'
+          helperText='Format (###)###-####'
           margin='normal'
           id='cellNumber'
           label="Cell number"
@@ -90,7 +91,7 @@ const RegisterUserForm = () => {
         />
         <TextField
           required
-          helperText='Format (111)222-3333'
+          helperText='Format (###)###-####'
           margin='normal'
           id='phoneNumber'
           label="Phone number"
