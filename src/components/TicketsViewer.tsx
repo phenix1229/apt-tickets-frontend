@@ -67,7 +67,7 @@ useEffect(() => {
   (async ()=> { 
     if(user.role === "Resident"){
       try{
-        await axios.get(`http://localhost:5000/api/tickets/byEmail/${user.email}`)
+        await axios.get(`tickets/byEmail/${user.email}`)
       .then((response:any) => {
         const stringData:any = JSON.stringify(response.data)
         const editData =stringData.replaceAll("_id","id")
@@ -80,7 +80,7 @@ useEffect(() => {
   }
     if(user.role === "Staff"){
       try{
-        await axios.get(`http://localhost:5000/api/tickets/byDepartment/${user.department}`)
+        await axios.get(`tickets/byDepartment/${user.department}`)
       .then((response:any) => {
         const stringData:any = JSON.stringify(response.data)
         const editData =stringData.replaceAll("_id","id")
@@ -93,7 +93,7 @@ useEffect(() => {
   } 
   if(user.role === "Admin"){
     try{
-      await axios.get('http://localhost:5000/api/tickets/all')
+      await axios.get('tickets/all')
     .then((response:any) => {
       const stringData:any = JSON.stringify(response.data)
       const editData =stringData.replaceAll("_id","id")

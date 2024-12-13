@@ -12,6 +12,7 @@ import Register from './pages/Register'
 import ViewTicket from './pages/ViewTicket'
 import ViewAllTickets from './pages/ViewAllTickets'
 import ViewAllUsers from './pages/ViewAllUsers'
+import ViewUser from './pages/ViewUser'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -27,6 +28,7 @@ const router = createBrowserRouter(
         <Route path='/viewTicket' element={<ViewTicket />}/>
         <Route path='/viewAllTickets' element={<ViewAllTickets />}/>
         <Route path='/viewAllUsers' element={<ViewAllUsers />}/>
+        <Route path='/viewUser' element={<ViewUser />}/>
       </Route>
   )
 )

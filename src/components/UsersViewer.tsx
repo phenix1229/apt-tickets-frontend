@@ -100,7 +100,7 @@ useEffect(() => {
 
 
   if(redirect){
-    return <Navigate to="/viewUser" />
+    return <Navigate to="/ViewUser" />
   }
 
   

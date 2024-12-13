@@ -3,9 +3,9 @@ import { Button, Container, FormControl, Grid2, TextField } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { RootState } from '../app/store'
 import React, { useState } from 'react'
-import UpdateTicket from './UpdateTicket'
 import { Navigate } from 'react-router-dom'
 import '../interceptors/axios'
+import UpdateTicketForm from '../components/UpdateTicketForm'
 
 const ViewTicket = () => {
   const [editing, setEditing] = useState(false)
@@ -98,24 +98,19 @@ const ViewTicket = () => {
               {ticket.ticketStatus === 'Active' && (
                 <Button variant='contained' style={{marginBottom:'8px'}} onClick={() => setRedirect('comment')}>Add comment</Button>
               )}
-          {/* {user.role === 'Staff' && (
-            <Button variant='contained' onClick={() => {setRedirect('back')}}>Back</Button>
-          )} */}
             </FormControl>
         </Container>}
         <Container>
         {(user.role !== 'Staff' && editing) && (
-          <UpdateTicket />
+          <UpdateTicketForm />
         )}
           {(user.role !== 'Staff' && ticket.ticketStatus !== 'Inactive') && (
             <Button variant='contained' style={{marginBottom:"8px"}} onClick={() => {setEditing(!editing)}}>{editing === false ? 'Edit ticket' : 'Cancel'}</Button>
           )}
           </Container>
-          <FormControl>
-          {/* {user.role === 'Staff' && ( */}
+          {editing === false &&(<FormControl>
             <Button variant='contained' onClick={() => {setRedirect('back')}}>Back</Button>
-          {/* )} */}
-          </FormControl>
+          </FormControl>)}
 
     </div>
   )
