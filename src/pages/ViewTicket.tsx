@@ -1,12 +1,15 @@
 
-import { Button, Container, Grid2, TextField } from '@mui/material'
+import { Button, Container, FormControl, Grid2, TextField } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { RootState } from '../app/store'
-import React, { useState } from 'react'
+import React, { SyntheticEvent, useState } from 'react'
 import UpdateTicket from './UpdateTicket'
+import { Navigate } from 'react-router-dom'
+import '../interceptors/axios'
 
 const ViewTicket = () => {
   const [editing, setEditing] = useState(false)
+  const [redirect, setRedirect] = useState('')
   const ticket:any = useSelector((state:RootState) => state.ticket.ticket)
   const user:any = useSelector((state:RootState) => state.user.user)
 
@@ -43,13 +46,21 @@ const ViewTicket = () => {
     );
   }
 
+  if(redirect === 'back'){
+    return (<Navigate to={'/ViewAllTickets'} />)
+  }
+  
+  if(redirect === 'comment'){
+    return (<Navigate to={'/AddComment'} />)
+  }
+
   return (
     <div>
       <br/>
       <br/>
       <br/>
       <br/>
-      {(user.role !== 'Staff' && !editing) && <Container sx={{width:'50%'}}>
+      {!editing && <Container sx={{width:'50%'}}>
       <h2>Ticket</h2>
       <Grid2 container rowSpacing={1} columnSpacing={1}>
         <Grid2 size={4}>
@@ -82,6 +93,15 @@ const ViewTicket = () => {
           {ticket.updateComments.length > 0 && 
             updates(ticket.updateComments)
           }
+            <FormControl>
+
+              {ticket.ticketStatus === 'Active' && (
+                <Button variant='contained' style={{marginBottom:'8px'}} onClick={() => setRedirect('comment')}>Add comment</Button>
+              )}
+          {user.role === 'Staff' && (
+            <Button variant='contained' onClick={() => {setRedirect('back')}}>Back</Button>
+          )}
+            </FormControl>
         </Container>}
         {(user.role !== 'Staff' && editing) && (
           <UpdateTicket />

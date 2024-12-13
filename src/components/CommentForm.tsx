@@ -2,16 +2,22 @@ import { Button, Checkbox, Container, FormControl, FormControlLabel, FormGroup, 
 import { SyntheticEvent, useState } from "react"
 import { Navigate } from "react-router-dom"
 import axios from "axios"
+import { useSelector } from "react-redux"
+import { RootState } from "../app/store"
 
-const CommentsForm = (id:any) => {
+const CommentsForm = () => {
     const [comment, setComment] = useState('')
     const [closeTicket, setCloseTicket] = useState('Active')
     const [redirect, setRedirect] = useState(false)
+    const ticket:any = useSelector((state:RootState) => state.ticket.ticket)
 
     const submit = async (e:SyntheticEvent) => {
       e.preventDefault()
+      if(ticket.ticketStatus === 'Inactive'){
+        return alert('Ticket is inactive and cannot be commented on')
+      }
       try {
-        const response:any = await axios.patch(`http://localhost:5000/api/tickets/${id.id}`, {
+        const response:any = await axios.patch(`http://localhost:5000/api/tickets/${ticket.id}`, {
           comment,
           ticketStatus:closeTicket
         })
@@ -44,9 +50,13 @@ if(redirect){
                 />
              <FormGroup>
                 <FormControlLabel control={<Checkbox id={closeTicket} value={closeTicket} onChange={() => setCloseTicket('Inactive')} name="closeTicket" />} label="Close ticket" />
+                  <Container>
+
                 <FormControl>
-             <Button variant="contained" onClick={(e) => submit(e)}>Submit</Button>
+             <Button variant="contained" style={{marginBottom:'8px'}} onClick={(e) => submit(e)}>Submit</Button>
+             <Button variant="contained" onClick={() => setRedirect(true)}>Cancel</Button>
         </FormControl>
+                  </Container>
              </FormGroup>
       </Container>
     )

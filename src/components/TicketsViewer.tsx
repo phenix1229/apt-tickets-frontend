@@ -59,7 +59,7 @@ const rows:any = [];
 
 export default function TicketsViewer() {
 const [redirect, setRedirect] = useState(false)
-const [filteredTickets, setFilteredTickets] = useState([])
+// const [filteredTickets, setFilteredTickets] = useState([])
 const dispatch = useDispatch();
 let user:any = useSelector((state:RootState) => state.user.user);
 let tickets:any = useSelector((state:RootState) => state.tickets.tickets);
@@ -73,7 +73,7 @@ useEffect(() => {
         const stringData:any = JSON.stringify(response.data)
         const editData =stringData.replaceAll("_id","id")
         dispatch(setTickets(JSON.parse(editData)))
-        setFilteredTickets(JSON.parse(editData))
+        // setFilteredTickets(JSON.parse(editData))
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -87,20 +87,21 @@ useEffect(() => {
         const stringData:any = JSON.stringify(response.data)
         const editData =stringData.replaceAll("_id","id")
         dispatch(setTickets(JSON.parse(editData)))
-        setFilteredTickets(JSON.parse(editData))
+        // setFilteredTickets(JSON.parse(editData))
       })
       .catch(error => {
         console.error('Error fetching data:', error);
       });
-    } catch(error){}
-  } else{
+    } catch(error){ alert(error)}
+  } 
+  if(user.role === "Admin"){
     try{
       await axios.get('http://localhost:5000/api/tickets/all')
     .then((response:any) => {
       const stringData:any = JSON.stringify(response.data)
       const editData =stringData.replaceAll("_id","id")
       dispatch(setTickets(JSON.parse(editData)))
-      setFilteredTickets(JSON.parse(editData))
+      // setFilteredTickets(JSON.parse(editData))
     })
     .catch(error => {
       console.error('Error fetching data:', error);
@@ -129,7 +130,7 @@ useEffect(() => {
         <br/>
         <br/>
       <DataGrid
-        rows={filteredTickets}
+        rows={tickets}
         columns={columns}
         onRowClick={rowClicked}
         initialState={{

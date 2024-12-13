@@ -25,10 +25,10 @@ const router = createBrowserRouter(
         <Route path='/createTicket' element={<CreateTicket />}/>
         <Route path='/createUser' element={<CreateUser />}/>
         <Route path='/updateTicket' element={<UpdateTicket />}/>
-        <Route path='addComment' element={<AddComment />}/>
-        <Route path='register' element={<Register />}/>
-        <Route path='viewTicket' element={<ViewTicket />}/>
-        <Route path='viewAllTickets' element={<ViewAllTickets />}/>
+        <Route path='/addComment' element={<AddComment />}/>
+        <Route path='/register' element={<Register />}/>
+        <Route path='/viewTicket' element={<ViewTicket />}/>
+        <Route path='/viewAllTickets' element={<ViewAllTickets />}/>
       </Route>
   )
 )
